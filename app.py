@@ -6,7 +6,7 @@ import argparse
 import itertools
 from collections import Counter
 from collections import deque
-
+import dji
 import cv2 as cv
 import numpy as np
 import mediapipe as mp
@@ -97,7 +97,8 @@ def main():
 
     #  ########################################################################
     mode = 0
-
+    counter = 0
+    drone = dji.DJI() 
     while True:
         fps = cvFpsCalc.get()
 
@@ -122,6 +123,7 @@ def main():
         image.flags.writeable = True
 
         #  ####################################################################
+        ## This only runs is at least one hand was detected. 
         if results.multi_hand_landmarks is not None:
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
                                                   results.multi_handedness):
@@ -143,6 +145,12 @@ def main():
                 hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
                 if hand_sign_id == 2:  # Point gesture
                     point_history.append(landmark_list[8])
+                elif hand_sign_id == 0:
+                    print(drone.increase_counter())
+                    # print("Open")
+
+                elif hand_sign_id == 1:
+                    print("close")
                 else:
                     point_history.append([0, 0])
 
