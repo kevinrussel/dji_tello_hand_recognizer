@@ -14,7 +14,7 @@ import mediapipe as mp
 from utils import CvFpsCalc
 from model import KeyPointClassifier
 from model import PointHistoryClassifier
-
+import threading
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -99,6 +99,8 @@ def main():
     mode = 0
     counter = 0
     drone = dji.DJI() 
+    t = threading.Thread(target=drone.worker)
+    t.start()
     while True:
         fps = cvFpsCalc.get()
 
