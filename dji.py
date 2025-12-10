@@ -1,7 +1,5 @@
 from djitellopy import Tello
 
-import time
-import asyncio
 import queue
 global_queue = queue.Queue()
 
@@ -16,8 +14,11 @@ class DJI:
     def worker(self):
         while True:
             item = global_queue.get()
-            self.liftoff()
+            if item == "liftoff":
+                self.liftoff()  
 
+
+    
 
     def liftoff(self):
         self.tello.takeoff()

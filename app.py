@@ -149,7 +149,6 @@ def main():
                     point_history.append(landmark_list[8])
                 elif hand_sign_id == 0:
                     print(drone.increase_counter())
-                    # print("Open")
 
                 elif hand_sign_id == 1:
                     print("close")
