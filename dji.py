@@ -25,7 +25,7 @@ class DJI:
 
     def increase_counter(self): 
         self.counter +=1
-        if (self.counter % 25 == 0):
+        if (self.counter % 50 == 0):
             self.counter = 0
             global_queue.put("liftoff")
         return self.counter
