@@ -152,7 +152,7 @@ def main():
                     pass
 
                 elif hand_sign_id == 1:
-                    print("close")
+                    
                 else:
                     point_history.append([0, 0])
 
