@@ -148,7 +148,8 @@ def main():
                 if hand_sign_id == 2:  # Point gesture
                     point_history.append(landmark_list[8])
                 elif hand_sign_id == 0:
-                    print(drone.increase_counter())
+                    # print(drone.increase_counter())
+                    pass
 
                 elif hand_sign_id == 1:
                     print("close")
