@@ -98,9 +98,9 @@ def main():
     #  ########################################################################
     mode = 0
     counter = 0
-    # drone = dji.DJI() 
-    # t = threading.Thread(target=drone.worker)
-    # t.start()
+    drone = dji.DJI() 
+    t = threading.Thread(target=drone.worker)
+    t.start()
     while True:
         fps = cvFpsCalc.get()
 
@@ -148,11 +148,14 @@ def main():
                 if hand_sign_id == 2:  # Point gesture
                     point_history.append(landmark_list[8])
                 elif hand_sign_id == 0:
-                    # print(drone.increase_counter())
-                    pass
+                    drone.takeoff_initiation()
 
                 elif hand_sign_id == 1:
-                    
+                    drone.land_drone()
+                elif hand_sign_id == 4:
+                    drone.move("right")
+                elif hand_sign_id == 5:
+                    drone.move("left")
                 else:
                     point_history.append([0, 0])
 
