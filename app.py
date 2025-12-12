@@ -98,9 +98,9 @@ def main():
     #  ########################################################################
     mode = 0
     counter = 0
-    drone = dji.DJI() 
-    t = threading.Thread(target=drone.worker)
-    t.start()
+    # drone = dji.DJI() 
+    # t = threading.Thread(target=drone.worker)
+    # t.start()
     while True:
         fps = cvFpsCalc.get()
 
