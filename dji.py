@@ -20,11 +20,11 @@ class DJI:
             if item == "liftoff":
                 self.liftoff()  
             elif item == "right":
-                self.move_right(20)
+                self.tello.move_right(20)
             elif item == "left":
-                self.move_left(20)
+                self.tello.move_left(20)
             elif item == "land":
-                self.land()
+                self.tello.land()
 
 
     def land_drone(self):
@@ -56,4 +56,3 @@ class DJI:
         if (self.counter % 50 == 0):
             self.counter = 0
             global_queue.put("liftoff")
-        return self.counter
