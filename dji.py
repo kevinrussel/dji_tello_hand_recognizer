@@ -1,7 +1,7 @@
 from djitellopy import Tello
 
 import queue
-global_queue = queue.Queue()
+global_queue = queue.Queue(maxsize=3)
 
 class DJI:
     
@@ -9,6 +9,7 @@ class DJI:
         self.counter = 0
         self.right_counter = 0
         self.left_counter = 0
+        self.land_counter = 0
         self.tello = Tello()
         self.tello.connect()
 
@@ -27,23 +28,28 @@ class DJI:
 
 
     def land_drone(self):
-        global_queue.put("land")
+        self.land_counter += 1
+        if(self.land_counter % 20 == 0):
+            global_queue.put("land")
+            self.land_counter = 0
 
     def move(self, direction):
         if direction == "right":
             self.right_counter += 1
-            if(self.right_counter % 10 == 0):
+            if(self.right_counter % 5 == 0):
                 global_queue.put(direction)
                 self.right_counter = 0
         else:
             self.left_counter += 1
-            if(self.left_counter % 10 == 0):
+            if(self.left_counter % 6 == 0):
                 global_queue.put(direction)
                 self.left_counter = 0
 
     def liftoff(self):
-        self.tello.takeoff()
-        self.tello.land()
+        if self.tello.get_height() > 1:
+            pass
+        else:
+            self.tello.takeoff()
 
     def takeoff_initiation(self): 
         self.counter +=1
