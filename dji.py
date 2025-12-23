@@ -1,22 +1,31 @@
 from djitellopy import Tello
 from djitellopy.tello import TelloException
-import queue, threading, time
+import queue, threading
 
 class DJI:
     def __init__(self):
         self.tello = Tello()
         self.tello.connect()
-        self.stop_event = threading.Event()
 
-    def worker(self, q: queue.Queue):
+        self.stop_event = threading.Event()
+        self.q = queue.Queue(maxsize=3)  
+
+    def enqueue(self, item: str):
+        """Non-blocking: drop if queue is full."""
+        try:
+            self.q.put_nowait(item)
+        except queue.Full:
+            pass
+
+    def worker(self):
         while not self.stop_event.is_set():
             try:
-                item = q.get(timeout=0.2)
+                item = self.q.get(timeout=0.2)
             except queue.Empty:
                 continue
 
             try:
-                if item == "liftoff":
+                if item in ("liftoff", "takeoff"):
                     self.liftoff()
                 elif item == "right":
                     self.tello.move_right(20)
@@ -29,7 +38,6 @@ class DJI:
 
             except TelloException as e:
                 print(f"[DRONE CMD FAILED] {item} -> {e}")
-                # keep worker alive
 
             finally:
-                q.task_done()
+                self.q.task_done()

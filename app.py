@@ -101,6 +101,7 @@ def main():
     drone = dji.DJI() 
     t = threading.Thread(target=drone.worker, args=(), daemon=True)
     t.start()
+    drone.eneuqu
     while True:
         fps = cvFpsCalc.get()
 
