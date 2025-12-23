@@ -1,58 +1,35 @@
 from djitellopy import Tello
-
-import queue
-global_queue = queue.Queue(maxsize=3)
+from djitellopy.tello import TelloException
+import queue, threading, time
 
 class DJI:
-    
     def __init__(self):
-        self.counter = 0
-        self.right_counter = 0
-        self.left_counter = 0
-        self.land_counter = 0
         self.tello = Tello()
         self.tello.connect()
+        self.stop_event = threading.Event()
 
+    def worker(self, q: queue.Queue):
+        while not self.stop_event.is_set():
+            try:
+                item = q.get(timeout=0.2)
+            except queue.Empty:
+                continue
 
-    def worker(self):
-        while True:
-            item = global_queue.get()
-            if item == "liftoff":
-                self.liftoff()  
-            elif item == "right":
-                self.tello.move_right(20)
-            elif item == "left":
-                self.tello.move_left(20)
-            elif item == "land":
-                self.tello.land()
+            try:
+                if item == "liftoff":
+                    self.liftoff()
+                elif item == "right":
+                    self.tello.move_right(20)
+                elif item == "left":
+                    self.tello.move_left(20)
+                elif item == "land":
+                    self.tello.land()
+                elif item == "STOP":
+                    self.stop_event.set()
 
+            except TelloException as e:
+                print(f"[DRONE CMD FAILED] {item} -> {e}")
+                # keep worker alive
 
-    def land_drone(self):
-        self.land_counter += 1
-        if(self.land_counter % 20 == 0):
-            global_queue.put("land")
-            self.land_counter = 0
-
-    def move(self, direction):
-        if direction == "right":
-            self.right_counter += 1
-            if(self.right_counter % 5 == 0):
-                global_queue.put(direction)
-                self.right_counter = 0
-        else:
-            self.left_counter += 1
-            if(self.left_counter % 6 == 0):
-                global_queue.put(direction)
-                self.left_counter = 0
-
-    def liftoff(self):
-        if self.tello.get_height() > 1:
-            pass
-        else:
-            self.tello.takeoff()
-
-    def takeoff_initiation(self): 
-        self.counter +=1
-        if (self.counter % 50 == 0):
-            self.counter = 0
-            global_queue.put("liftoff")
+            finally:
+                q.task_done()
