@@ -101,7 +101,6 @@ def main():
     drone = dji.DJI() 
     t = threading.Thread(target=drone.worker, args=(), daemon=True)
     t.start()
-    drone.eneuqu
     while True:
         fps = cvFpsCalc.get()
 
@@ -149,14 +148,14 @@ def main():
                 if hand_sign_id == 2:  # Point gesture
                     point_history.append(landmark_list[8])
                 elif hand_sign_id == 0:
-                    drone.worker("takeoff")
+                    drone.enqueue("takeoff")
 
                 elif hand_sign_id == 1:
-                    drone.worker("land")
+                    drone.enqueue("land")
                 elif hand_sign_id == 4:
-                    drone.worker("right")
+                    drone.enqueue("right")
                 elif hand_sign_id == 5:
-                    drone.worker("left")
+                    drone.enqueue("left")
                 else:
                     point_history.append([0, 0])
 
