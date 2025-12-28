@@ -28,7 +28,6 @@ class DJI:
                 if item in ("takeoff"):
                     if(self.tello.get_height() ==0 ):
                         self.tello.takeoff()
-
                 elif item == "right":
                     self.tello.move_right(20)
                 elif item == "left":
