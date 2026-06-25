@@ -1,7 +1,7 @@
 # from djitellopy import Tello
 # from djitellopy.tello import TelloException
 import queue, threading
-
+##TODO: Fix this
 # class DJI:
 #     def __init__(self):
 #         self.tello = Tello()
