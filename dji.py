@@ -1,5 +1,5 @@
-from djitellopy import Tello
-from djitellopy.tello import TelloException
+# from djitellopy import Tello
+# from djitellopy.tello import TelloException
 import queue, threading
 
 # class DJI:
@@ -42,3 +42,12 @@ import queue, threading
 
 #             finally:
 #                 self.q.task_done()
+
+
+
+
+def main():
+    print("hello world")
+
+if '__name__' == '__main':
+    main()
