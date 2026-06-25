@@ -98,6 +98,7 @@ def main():
     #  ########################################################################
     mode = 0
     counter = 0
+    ## TODO: Get rid of this.
     drone = dji.DJI() 
     t = threading.Thread(target=drone.worker, args=(), daemon=True)
     t.start()
