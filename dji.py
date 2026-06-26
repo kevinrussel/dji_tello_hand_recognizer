@@ -1,6 +1,8 @@
 # from djitellopy import Tello
 # from djitellopy.tello import TelloException
 import queue, threading
+
+x = 4
 ##TODO: Fix this
 # class DJI:
 #     def __init__(self):
